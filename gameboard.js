@@ -1,3 +1,5 @@
+import { ship } from "./ship";
+
 export function gameboard() {
     let grid = [];
     for(let i = 0; i < 100; i++) {
@@ -6,6 +8,7 @@ export function gameboard() {
 
     return {
         grid: grid,
+        ships: [],
 
         shipOutOfBounds(ship) {
             let col = ship.position % 10;
@@ -28,48 +31,76 @@ export function gameboard() {
             }
         },
 
-        placeShip(ship) {
+        placeShip(shipPosition, shipOrientation, shipLength) {
+            let newShip = ship(shipPosition, shipOrientation, shipLength);
+
             // reject placement if ship goes out of bounds
-            if(this.shipOutOfBounds(ship)) {
+            if(this.shipOutOfBounds(newShip)) {
                 return false;
             }
 
             // reject placement if it causes collision with previously place ship
-            if(ship.orientation === 'h') {
-                for(let i = ship.position; i < ship.position + ship.length; i++) {
+            if(newShip.orientation === 'h') {
+                for(let i = newShip.position; i < newShip.position + newShip.length; i++) {
                     if(this.grid[i].material === 'ship') {
                         return false;
                     }
                 }
-            } else if(ship.orientation === 'v') {
-                for(let i = ship.position; i <= ship.position + 10 * (ship.length - 1); i = i + 10) {
+            } else if(newShip.orientation === 'v') {
+                for(let i = newShip.position; i <= newShip.position + 10 * (newShip.length - 1); i = i + 10) {
                     if(this.grid[i].material === 'ship') {
                         return false;
                     }
                 }
             }
 
-            if(ship.orientation === 'h') {
-                for(let i = ship.position; i < ship.position + ship.length; i++) {
+            if(newShip.orientation === 'h') {
+                for(let i = newShip.position; i < newShip.position + newShip.length; i++) {
                     this.grid[i].material = 'ship';
                 }
             }
 
-            if(ship.orientation === 'v') {
-                for(let i = ship.position; i <= ship.position + 10 * (ship.length - 1); i = i + 10) {
+            if(newShip.orientation === 'v') {
+                for(let i = newShip.position; i <= newShip.position + 10 * (newShip.length - 1); i = i + 10) {
                     this.grid[i].material = 'ship';
                 }
             }
 
+            this.ships.push(newShip);
             return true;
         },
 
+        getShipAtCoordinate(coordinate) {
+            for(let i = 0; i < this.ships.length; i++) {
+                if(this.ships[i].orientation === 'h') {
+                    for(let j = this.ships[i].position; j < this.ships[i].position + this.ships[i].length; j++) {
+                        if(j === coordinate) {
+                            return this.ships[i];
+                        }
+                    }
+                }
+
+                if(this.ships[i].orientation === 'v') {
+                    for(let j = this.ships[i].position; j <= this.ships[i].position + 10 * this.ships[i].length; j = j + 10) {
+                        if(j === coordinate) {
+                            return this.ships[i];
+                        }
+                    }
+                }
+            }
+        },
+
         recieveAttack(attackPosition) {
+            // attacked ship will be a ship object or undefined if attackPosition is not on a ship
+            let attackedShip = this.getShipAtCoordinate(attackPosition);
+
             if(this.grid[attackPosition].beenHit === false) {
                 this.grid[attackPosition].beenHit = true;
-                return true;
-            } else {
-                return false;
+
+                // attackedShip must be a ship object in order to call hit
+                if(attackedShip != undefined) {
+                    attackedShip.hit();
+                }
             }
         }
     }

@@ -1,4 +1,3 @@
-import exp from 'constants';
 import { gameboard } from './gameboard';
 import { ship } from './ship';
 
@@ -23,11 +22,11 @@ describe('Gameboard factory tests', () => {
     });
 
     test('Placing horizontal ship returns true', () => {
-        expect(gb.placeShip(horizontalShip)).toBe(true);
+        expect(gb.placeShip(horizontalShip.position, horizontalShip.orientation, horizontalShip.length)).toBe(true);
     });
 
     test('Placing horizontal ship changes correct grid cells material to ship', () => {
-        gb.placeShip(horizontalShip);
+        gb.placeShip(horizontalShip.position, horizontalShip.orientation, horizontalShip.length);
         expect(gb.grid[23].material).toBe('ship');
         expect(gb.grid[24].material).toBe('ship');
         expect(gb.grid[25].material).toBe('ship');
@@ -35,59 +34,59 @@ describe('Gameboard factory tests', () => {
     });
 
     test('Placing horizontal ship out of bounds returns false', () => {
-        expect(gb.placeShip(invalidHorizontalShip)).toBe(false);
+        expect(gb.placeShip(invalidHorizontalShip.position, invalidHorizontalShip.orientation, invalidHorizontalShip.length)).toBe(false);
     });
 
     test('Placing horizontal ship out of bounds should leave all grid cells unchanged', () => {
-        gb.placeShip(invalidHorizontalShip);
+        gb.placeShip(invalidHorizontalShip.position, invalidHorizontalShip.orientation, invalidHorizontalShip.length);
         for(let i = 0; i < 100; i++) {
             expect(gb.grid[i].material).toBe('water');
         }
     });
 
     test('Placing vertical ship returns true', () => {
-        expect(gb.placeShip(verticalShip)).toBe(true);
+        expect(gb.placeShip(verticalShip.position, verticalShip.orientation, verticalShip.length)).toBe(true);
     })
 
     test('Placing vertical ship changes correct grid cells material to ship', () => {
-        gb.placeShip(verticalShip);
+        gb.placeShip(verticalShip.position, verticalShip.orientation, verticalShip.length);
         expect(gb.grid[15].material).toBe('ship');
         expect(gb.grid[25].material).toBe('ship');
         expect(gb.grid[35].material).toBe('ship');
     });
 
     test('Placing vertical ship out of bounds returns false', () => {
-        expect(gb.placeShip(invalidVertiaclShip)).toBe(false);
+        expect(gb.placeShip(invalidVertiaclShip.position, invalidVertiaclShip.orientation, invalidVertiaclShip.length)).toBe(false);
     });
 
     test('Placing vertical ship out of bounds should leave all grid cells unchanged', () => {
-        gb.placeShip(invalidVertiaclShip);
+        gb.placeShip(invalidVertiaclShip.position, invalidVertiaclShip.orientation, invalidVertiaclShip.length);
         for(let i = 0; i < 100; i++) {
             expect(gb.grid[i].material).toBe('water');
         }
     });
 
     test('Placing ship that collides with other ship return false', () => {
-        gb.placeShip(horizontalShip);
-        expect(gb.placeShip(verticalShip)).toBe(false);
+        gb.placeShip(horizontalShip.position, horizontalShip.orientation, horizontalShip.length);
+        expect(gb.placeShip(verticalShip.position, verticalShip.orientation, verticalShip.length)).toBe(false);
     });
 
     test('Placing ship that collides with other ship leaves grid cells material unchanged', () => {
-        gb.placeShip(horizontalShip);
-        gb.placeShip(verticalShip);
+        gb.placeShip(horizontalShip.position, horizontalShip.orientation, horizontalShip.length);
+        gb.placeShip(verticalShip.position, verticalShip.orientation, verticalShip.length);
         expect(gb.grid[15].material).toBe('water');
         expect(gb.grid[25].material).toBe('ship');
         expect(gb.grid[35].material).toBe('water');
     });
 
     test('Placing ships that do not collide returns true', () => {
-        gb.placeShip(verticalShip);
-        expect(gb.placeShip(nonCollisionShip)).toBe(true);
+        gb.placeShip(verticalShip.position, verticalShip.orientation, verticalShip.length);
+        expect(gb.placeShip(nonCollisionShip.position, nonCollisionShip.orientation, nonCollisionShip.length)).toBe(true);
     });
 
     test('Placing ships that do not collide changes correct grid cells material to ship', () => {
-        gb.placeShip(verticalShip);
-        gb.placeShip(nonCollisionShip);
+        gb.placeShip(verticalShip.position, verticalShip.orientation, verticalShip.length);
+        gb.placeShip(nonCollisionShip.position, nonCollisionShip.orientation, nonCollisionShip.length);
         expect(gb.grid[15].material).toBe('ship');
         expect(gb.grid[25].material).toBe('ship');
         expect(gb.grid[35].material).toBe('ship');
@@ -102,13 +101,19 @@ describe('Gameboard factory tests', () => {
         gb.recieveAttack(33);
         expect(gb.grid[33].beenHit).toBe(true)
     });
-    
-    test('Recieve attack returns true on attacking cell that has not been hit', () => {
-        expect(gb.recieveAttack(25)).toBe(true);
+ 
+    test('Call hit function on ship that gets hit', () => {
+        gb.placeShip(horizontalShip.position, horizontalShip.orientation, horizontalShip.length);
+        gb.recieveAttack(24);
+        gb.recieveAttack(25)
+        expect(gb.ships[0].numHits).toBe(2);
     });
 
-    test('Recieve attack returns false if coordinate has already been hit', () => {
-        gb.recieveAttack(25);
-        expect(gb.recieveAttack(25)).toBe(false);
-    })
+    test('Prevent ship from being hit twice on the same coordinate', () => {
+        gb.placeShip(horizontalShip.position, horizontalShip.orientation, horizontalShip.length);
+        gb.recieveAttack(24);
+        gb.recieveAttack(24);
+        expect(gb.ships[0].numHits).toBe(1);
+    });
+
 });
