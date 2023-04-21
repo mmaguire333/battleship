@@ -116,4 +116,13 @@ describe('Gameboard factory tests', () => {
         expect(gb.ships[0].numHits).toBe(1);
     });
 
+    test('Recieve attack should return "hit" if ship is hit', () => {
+        gb.placeShip(horizontalShip.position, horizontalShip.orientation, horizontalShip.length);
+        expect(gb.recieveAttack(24)).toBe('hit');
+    });
+
+    test('Recieve attack should return "miss" if a ship is not hit', () => {
+        gb.placeShip(horizontalShip.position, horizontalShip.orientation, horizontalShip.length);
+        expect(gb.recieveAttack(60)).toBe('miss');
+    });
 });

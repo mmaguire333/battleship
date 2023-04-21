@@ -100,6 +100,9 @@ export function gameboard() {
                 // attackedShip must be a ship object in order to call hit
                 if(attackedShip != undefined) {
                     attackedShip.hit();
+                    return 'hit';
+                } else {
+                    return 'miss';
                 }
             }
         }
