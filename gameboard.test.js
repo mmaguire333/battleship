@@ -14,7 +14,7 @@ describe('Gameboard factory tests', () => {
         verticalShip = ship(15, 'v', 3);
         nonCollisionShip = ship(17, 'v', 5);
         invalidHorizontalShip = ship(38, 'h', 5);
-        invalidVertiaclShip = ship(93, 'v', 4);
+        invalidVertiaclShip = ship(83, 'v', 3);
     });
 
     test('Initalize board grid', () => {

@@ -23,7 +23,7 @@ export function gameboard() {
             }
 
             if(ship.orientation === 'v') {
-                if(row + ship.length >= 10) {
+                if(row + ship.length - 1 >= 10) {
                     return true;
                 } else {
                     return false;
