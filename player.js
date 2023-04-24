@@ -1,10 +1,8 @@
-import { gameboard } from "./gameboard";
+import { gameboard } from './gameboard.js';
 
 export function player(name, typeOfPlayer) {
     return {
         name: name,
-        type: typeOfPlayer,
-        isAttacking: false,
         previousShots: [],
         board: gameboard(),
         randomAttack() {
