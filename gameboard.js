@@ -1,4 +1,4 @@
-import { ship } from "./ship";
+import { ship } from './ship.js';
 
 export function gameboard() {
     let grid = [];
