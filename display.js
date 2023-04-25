@@ -41,6 +41,7 @@ export function display(player, computer) {
                         playerGridCells[i].style.backgroundColor = 'red';
                         playerGridCells[i].textContent = '\u00D7';
                         playerGridCells[i].style.fontSize = '50px';
+                        playerGridCells[i].style.color = 'black';
                     } else {
                         playerGridCells[i].style.backgroundColor = 'blue';
                     }
@@ -49,6 +50,7 @@ export function display(player, computer) {
                 if(player.board.grid[i].material === 'water' && player.board.grid[i].beenHit === true) {
                     playerGridCells[i].textContent = '\u2022';
                     playerGridCells[i].style.backgroundColor = '#eeeeee';
+                    playerGridCells[i].style.color = 'black';
                 }
             }
         },
@@ -60,11 +62,13 @@ export function display(player, computer) {
                         computerGridCells[i].style.backgroundColor = 'red';
                         computerGridCells[i].textContent = '\u00D7';
                         computerGridCells[i].style.fontSize = '50px';
+                        computerGridCells[i].style.color = 'black';
                     }
 
                     if(computer.board.grid[i].material === 'water') {
                         computerGridCells[i].textContent = '\u2022';
                         computerGridCells[i].style.backgroundColor = '#eeeeee';
+                        computerGridCells[i].style.color = 'black';
                     }
                 }
             }
@@ -73,14 +77,14 @@ export function display(player, computer) {
         clearPlayerBoard() {
             for(let i = 0; i < playerGridCells.length; i++) {
                 playerGridCells[i].textContent = '';
-                playerGridCells[i].style.backgroundColor = 'transparent';
+                playerGridCells[i].style.backgroundColor = 'white';
             }
         },
 
         clearComputerBoard() {
             for(let i = 0; i < computerGridCells.length; i++) {
                 computerGridCells[i].textContent = '';
-                computerGridCells[i].style.backgroundColor = 'transparent';
+                computerGridCells[i].style.backgroundColor = 'white';
             }
         },
 
