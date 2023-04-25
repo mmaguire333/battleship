@@ -1,13 +1,9 @@
 export function display(player, computer) {
     let playerBoard = document.querySelector('.player-one-grid');
     playerBoard.style.display = 'grid';
-    playerBoard.style.gridTemplateColumns = 'repeat(10, 30px)';
-    playerBoard.style.gridTemplateRows = 'repeat(10, 30px)';
 
     let computerBoard = document.querySelector('.player-two-grid');
     computerBoard.style.display = 'grid';
-    computerBoard.style.gridTemplateColumns = 'repeat(10, 30px)';
-    computerBoard.style.gridTemplateRows = 'repeat(10, 30px)';
 
     document.querySelector('.player-one-name').textContent = player.name;
     document.querySelector('.player-two-name').textContent = 'Computer';
@@ -40,7 +36,6 @@ export function display(player, computer) {
                     if(player.board.grid[i].beenHit === true) {
                         playerGridCells[i].style.backgroundColor = 'red';
                         playerGridCells[i].textContent = '\u00D7';
-                        playerGridCells[i].style.fontSize = '50px';
                         playerGridCells[i].style.color = 'black';
                     } else {
                         playerGridCells[i].style.backgroundColor = 'blue';
@@ -61,7 +56,6 @@ export function display(player, computer) {
                     if(computer.board.grid[i].material === 'ship') {
                         computerGridCells[i].style.backgroundColor = 'red';
                         computerGridCells[i].textContent = '\u00D7';
-                        computerGridCells[i].style.fontSize = '50px';
                         computerGridCells[i].style.color = 'black';
                     }
 
