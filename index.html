@@ -9,16 +9,25 @@
     <title>Battleship</title>
 </head>
 <body>
-    <form>
-        <label for="player-name">Enter Name</label>
-        <input type="text" name="player-name" id="player-name">
+    <h1 class="title">Battleship</h1>
+    <form class="player-form">
+        <label class="name-label" for="player-name">Enter Name: <input type="text" name="player-name" id="player-name"></label>
         <button type="button" id="form-submit">Submit</button>
     </form>
 
-    <h1 class="winner-message"></h1>
+    <h2 class="winner-message"></h2>
     <main>
-        <div class="player-one-grid"></div>
-        <div class="player-two-grid"></div>
+        <div class="grid-container">
+            <div class="player-one-grid"></div>
+            <h3 class="player-one-name"></h3>
+            <button type="button" style="display: none;" class="randomize-button">Randomize Ships</button>
+        </div>
+        <div class="grid-container">
+            <div class="player-two-grid"></div>
+            <h3 class="player-two-name"></h3>
+            <button type="button" style="display: none;" class="play-button">Play</button>
+        </div>
     </main>
+    <div class="new-game"><button type="button" class="new-game-button" onclick="window.location.reload()">New Game</button></div>
 </body>
 </html>
