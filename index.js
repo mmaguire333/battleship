@@ -17,6 +17,7 @@ let computer;
 let humanFleetData;
 let computerFleetData;
 let boardDisplays;
+let gridsActive = false;
 
 // Form event listener 
 document.getElementById('form-submit').addEventListener('click', () => {
@@ -44,6 +45,11 @@ document.getElementById('form-submit').addEventListener('click', () => {
     boardDisplays.renderPlayerBoard();
     boardDisplays.renderComputerBoard();
 
+    // Turn buttons on
+    document.querySelector('.randomize-button').style.display = 'block';
+    document.querySelector('.play-button').style.display = 'block';
+    document.querySelector('.new-game').style.display = 'flex';
+
     document.querySelector('form').style.display = 'none';
 });
 
@@ -51,6 +57,10 @@ document.getElementById('form-submit').addEventListener('click', () => {
 // Listen for player attacking enemy board, execute attack, then have computer counterattack -- this serves as the game loop
 document.addEventListener('click', (e) => {
     let target = e.target.closest('.computer-grid-square');
+
+    if(gridsActive === false) {
+        return;
+    }
 
     if(target) {
         let playerAttackIndex = Number(target.id);
@@ -80,4 +90,36 @@ document.addEventListener('click', (e) => {
             }
         }, 200);
     }
-})
+});
+
+// event listener for randomizing players ships
+document.addEventListener('click', (e) => {
+    let target = e.target.closest('.randomize-button');
+
+    if(target) {
+        let newFleetData = humanPlayer.generateFleetData();
+        
+        // reset players grid
+        for(let i = 0; i < humanPlayer.board.grid.length; i++) {
+            humanPlayer.board.grid[i] = {material: 'water', beenHit: false};
+        }
+
+        // clear dom grid
+        boardDisplays.clearPlayerBoard();
+
+        // update player grid with new fleet data
+        for(let i = 0; i < newFleetData.length; i++) {
+            humanPlayer.board.placeShip(newFleetData[i].position, newFleetData[i].orientation, newFleetData[i].length);
+        }
+
+        boardDisplays.renderPlayerBoard();
+    }
+});
+
+// make game playable once user clicks play
+let playBtn = document.querySelector('.play-button');
+playBtn.addEventListener('click', () => {
+    gridsActive = true;
+    playBtn.style.display = 'none';
+    document.querySelector('.randomize-button').style.display = 'none';
+});
