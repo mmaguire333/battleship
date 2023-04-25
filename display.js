@@ -9,6 +9,9 @@ export function display(player, computer) {
     computerBoard.style.gridTemplateColumns = 'repeat(10, 30px)';
     computerBoard.style.gridTemplateRows = 'repeat(10, 30px)';
 
+    document.querySelector('.player-one-name').textContent = player.name;
+    document.querySelector('.player-two-name').textContent = 'Computer';
+
     let playerGridCells = [];
     let computerGridCells = [];
 
@@ -36,13 +39,16 @@ export function display(player, computer) {
                 if(player.board.grid[i].material === 'ship') {
                     if(player.board.grid[i].beenHit === true) {
                         playerGridCells[i].style.backgroundColor = 'red';
+                        playerGridCells[i].textContent = '\u00D7';
+                        playerGridCells[i].style.fontSize = '50px';
                     } else {
-                        playerGridCells[i].style.backgroundColor = 'blue'
+                        playerGridCells[i].style.backgroundColor = 'blue';
                     }
                 }
 
                 if(player.board.grid[i].material === 'water' && player.board.grid[i].beenHit === true) {
-                    playerGridCells[i].style.backgroundColor = 'green';
+                    playerGridCells[i].textContent = '\u2022';
+                    playerGridCells[i].style.backgroundColor = '#eeeeee';
                 }
             }
         },
@@ -51,13 +57,30 @@ export function display(player, computer) {
             for(let i = 0; i < computer.board.grid.length; i++) {
                 if(computer.board.grid[i].beenHit === true) {
                     if(computer.board.grid[i].material === 'ship') {
-                        computerGridCells[i].style.backgroundColor = 'red'
+                        computerGridCells[i].style.backgroundColor = 'red';
+                        computerGridCells[i].textContent = '\u00D7';
+                        computerGridCells[i].style.fontSize = '50px';
                     }
 
                     if(computer.board.grid[i].material === 'water') {
-                        computerGridCells[i].style.backgroundColor = 'green';
+                        computerGridCells[i].textContent = '\u2022';
+                        computerGridCells[i].style.backgroundColor = '#eeeeee';
                     }
                 }
+            }
+        },
+
+        clearPlayerBoard() {
+            for(let i = 0; i < playerGridCells.length; i++) {
+                playerGridCells[i].textContent = '';
+                playerGridCells[i].style.backgroundColor = 'transparent';
+            }
+        },
+
+        clearComputerBoard() {
+            for(let i = 0; i < computerGridCells.length; i++) {
+                computerGridCells[i].textContent = '';
+                computerGridCells[i].style.backgroundColor = 'transparent';
             }
         },
 
