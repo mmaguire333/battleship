@@ -21,6 +21,13 @@ let gridsActive = false;
 
 // Form event listener 
 document.getElementById('form-submit').addEventListener('click', () => {
+    let valid = document.getElementById('player-name').checkValidity();
+
+    if(!valid) {
+        alert('Please enter name');
+        return;
+    }
+
     let playerName = document.getElementById('player-name').value;
 
     // Initialize players
@@ -75,10 +82,11 @@ document.addEventListener('click', (e) => {
 
         if(checkWin(computer.board)) {
             boardDisplays.displayWinMessage(humanPlayer);
+            gridsActive = false;
             return;
         }
 
-        // Computer returns fire after 2 seconds
+        // Computer returns fire after 0.2 seconds
         setTimeout(() =>{
             let computerAttackIndex = computer.randomAttack();
             humanPlayer.board.recieveAttack(computerAttackIndex);
@@ -86,6 +94,7 @@ document.addEventListener('click', (e) => {
 
             if(checkWin(humanPlayer.board)) {
                 boardDisplays.displayWinMessage(computer);
+                gridsActive = false;
                 return;
             }
         }, 200);
